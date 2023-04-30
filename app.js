@@ -5,10 +5,22 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
 
+const mongoose = require('mongoose');
+const CONNECTION_STRING = process.env.CONNECTION_STRING;
+
+// setup connection to mongo
+mongoose.connect(CONNECTION_STRING);
+const db = mongoose.connection;
+
+// recover from errors
+db.on('error', console.error.bind(console, 'connection error:'));
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
