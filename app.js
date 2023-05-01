@@ -17,6 +17,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 var indexRouter = require('./routes/index');
 const postsRouter = require('./routes/posts');
+const authRouter = require('./routes/auth')
 
 var app = express();
 
@@ -35,11 +36,17 @@ app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/api/posts', postsRouter);
+app.use('/api/auth', authRouter);
 
-// Return the client
+// dynamic routing posts subdirectory
 app.get('/posts*', (_, res) => {
   res.sendFile(path.join(__dirname, 'public') + '/index.html');
 });
+
+//dynamic routing authentification subdirectory
+app.get('/auth*', (_, res) => {
+  res.sendFile(path.join(_dirname, 'public') + '/index.html');
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
