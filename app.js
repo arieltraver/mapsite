@@ -4,7 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
+require('dotenv').config();
 
+const { usr } = require('./models/User');
 
 const mongoose = require('mongoose');
 const CONNECTION_STRING = process.env.CONNECTION_STRING;
