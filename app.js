@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
 
+
 const mongoose = require('mongoose');
 const CONNECTION_STRING = process.env.CONNECTION_STRING;
 
@@ -43,10 +44,12 @@ app.get('/posts*', (_, res) => {
   res.sendFile(path.join(__dirname, 'public') + '/index.html');
 });
 
+
 //dynamic routing authentification subdirectory
 app.get('/auth*', (_, res) => {
   res.sendFile(path.join(_dirname, 'public') + '/index.html');
 })
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
