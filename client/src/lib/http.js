@@ -7,12 +7,14 @@ const http = (
   url,
   {
     method = 'GET',
+    headers = undefined,
     data = undefined,
   },
 ) => {
   return axios({
     url: `${domain}${url}`,
     method,
+    headers,
     data,
   });
 };

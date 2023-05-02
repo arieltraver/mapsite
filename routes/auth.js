@@ -7,7 +7,7 @@ router.post('/signup', signup);
 router.post('/signin', signin);
 
 router.get('/getName', verifyJWT, (req, res) => {
-    res.json({isLoggedIn: true, name: req.user.name})
+    return res.json({isLoggedIn: true})
 });
 
 module.exports = router;

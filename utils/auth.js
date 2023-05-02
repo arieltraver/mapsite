@@ -14,6 +14,8 @@ exports.createJWT = (email, userId, duration) => {
 
 exports.verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"]
+    console.log("token is", token)
+    console.log("secret token is", process.env.TOKEN_SECRET)
     if(token) {
         jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
             if (err) return res.json({
@@ -27,7 +29,7 @@ exports.verifyJWT = (req, res, next) => {
             next()
         })
     } else {
-        res.json({message: "Incorrect Token Given", isLoggedIn: false})
+        res.json({message: "No Token Given", isLoggedIn: false})
     }
 }
 
