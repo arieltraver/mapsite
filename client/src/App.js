@@ -6,6 +6,7 @@ import Home from './pages/home'
 import Post from './pages/post';
 import Create from './pages/create';
 import Edit from './pages/edit';
+import Signin from './pages/signin'
 
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -32,6 +33,7 @@ function App() {
         <Route path="/posts/:id" element={<Post />}/>
         <Route path="/posts/new" element={<Create />}/>
         <Route path="/posts/:id/edit" element={<Edit />}/>
+        <Route path="/signin" element={<Signin />}/>
       </Routes>
 
     </>
