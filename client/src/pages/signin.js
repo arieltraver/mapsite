@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Container from 'react-bootstrap/Container';
@@ -15,32 +15,32 @@ const Signin = () => {
     const [show, setShow] = useState(false);
 
 
-    const onSubmit = async ({email, password}) => {
+    const onSubmit = ({email, password}) => {
         const payload = {
           email,
           password
         };
         http.post('/api/auth/signin', { data: payload })
-        .then(res => {res.json()}
-        ).then(data => {
-            localStorage.setItem("token", data.token)
+        .then(res => {
+            localStorage.setItem("token", res.data.token)
             navigate("/")
         }
         ).catch(err =>{
-            console.log(err)
+            console.log("error occurred login", err)
             setShow(true)
         });
     };
     //checks if you're logged in and navigates home if so
+    /*
     useEffect(() => {
         http.get('/api/auth/getName', {
             headers: {
                 "x-access-token":localStorage.getItem("token")
             }
         })
-        .then(res => res.json())
+        .then(result => result.json())
         .then(data => data.isLoggedIn ? navigate("/") : null)
-    }, [])
+    }, [])*/
     return (
         <Container className="my-5" style={{ maxWidth: '800px' }}>
             <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
@@ -53,11 +53,11 @@ const Signin = () => {
             <Form onSubmit={handleSubmit(onSubmit)} className="my-5">
                 <Form.Group className="mb-3">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="text" placeholder="Enter email address" {...register('title')} />
+                    <Form.Control type="text" placeholder="Enter email address" {...register('email')} />
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="text" placeholder="Enter password" {...register('author')} />
+                    <Form.Control type="text" placeholder="Enter password" {...register('password')} />
                 </Form.Group>
                 <Button variant="primary" type="submit">Sign In</Button>
             </Form>

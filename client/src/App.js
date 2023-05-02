@@ -24,6 +24,7 @@ function App() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Nav className="me-auto">
             <Nav.Link href="/posts/new">New</Nav.Link>
+            <Nav.Link href="/signin">Sign In</Nav.Link>
           </Nav>
         </Container>
         </Navbar>
