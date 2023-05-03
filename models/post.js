@@ -6,7 +6,9 @@ const Schema = mongoose.Schema;
 const PostSchema = new Schema({
   ip: { type: String, required: true },
   author: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },    
+  createdAt: { type: Date, default: Date.now },
+  lat: {type: Number, required: false},
+  lon: {type: Number, required: false}
 });
 
 // Sets the createdAt parameter equal to the current time

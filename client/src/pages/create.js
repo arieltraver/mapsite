@@ -23,10 +23,11 @@ const Post = () => {
 }, []);
 
   const onSubmit = async ({ ip, author}) => {
+
     const payload = {
       ip,
-      author
-    };
+      author,
+    }
     await http.post('/api/posts', { data: payload });
     navigate('/');
   };

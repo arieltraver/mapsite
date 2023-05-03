@@ -60,7 +60,7 @@ exports.signup = (req, res, next) => {
                res.status(500).json({
                   errors: [{ error: err }]
                });
-            });
+              });
          });
       });
      }
@@ -116,8 +116,6 @@ exports.signin = (req, res) => {
         });
       }).catch(err => {
         console.log("error in bcrypt.compare")
-        console.log("password:", password)
-        console.log("stored hash", user.password)
         console.log(err)
         res.status(500).json({errors: err});
       });
