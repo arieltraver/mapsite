@@ -8,14 +8,12 @@ import Create from './pages/create';
 import Edit from './pages/edit';
 import Signin from './pages/signin';
 import Signup from './pages/signup';
-import NavBar from './NavBar';
 
 
 function App() {
 
   return (
     <>
-    <NavBar/>
     <Routes>
       <Route path="/" element={<Home />}/>
       <Route path="/posts/:id" element={<Post />}/>

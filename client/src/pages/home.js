@@ -8,6 +8,7 @@ import http from '../lib/http';
 // utility function to format the creation date
 import formatDate from '../lib/formatDate';
 import Map from './map'
+import NavBar from './NavBar';
 
 const Home = () => {
   // useState allows us to make use of the component state to store the posts
@@ -26,6 +27,7 @@ const Home = () => {
   
   return (
     <>
+     <NavBar/>
       <Container className="my-5" style={{ maxWidth: '800px' }}>
         <Image
           src="../maplogo.svg"
@@ -45,7 +47,7 @@ const Home = () => {
               return (
                 <ListGroup.Item key={post._id}> 
                   <div className="fw-bold h3">
-                    <Link to={`/posts/${post._id}`} style={{ textDecoration: 'none' }}>{post.title}</Link>
+                    <Link to={`/posts/${post._id}`} style={{ textDecoration: 'none' }}>{post.ip}</Link>
                   </div>
                   <div>{post.author} - <span className="text-secondary">{formatDate(post.createdAt)}</span></div>
                 </ListGroup.Item>

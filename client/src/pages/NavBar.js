@@ -2,16 +2,24 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useEffect, useState} from 'react';
 import { useNavigate} from 'react-router-dom'
-import http from './lib/http'
+import http from '../lib/http'
 
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 
+function checkUser() {
+    http.get('/api/auth/getName', {
+        headers: {"x-access-token": localStorage.getItem("token")}
+    }).then(res => {return res.IsLoggedIn ? "loggedin" : "name"})
+}
+
 function NavBar() {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-    
+    const usrName = checkUser()
+
+    const [user, setUser] = useState(usrName)
+
     useEffect(() => {
         const headerz = {
         "x-access-token": localStorage.getItem("token")
@@ -24,6 +32,7 @@ function NavBar() {
     
     function logout() {
     localStorage.removeItem("token");
+    setUser(null)
     navigate("/signin");
     }
 

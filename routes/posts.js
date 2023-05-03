@@ -29,14 +29,11 @@ router.get('/:id', async (req, res, next) => {
 
 //post req for creating new post
 router.post('/', async (req, res, next) => {
-    const { title, author, content, tags } = req.body;
-  
+    const {ip, author} = req.body;
     // Create a new post
     const post = new Post({
-      title,
+      ip,
       author,
-      content,
-      tags,
     });
   
     // Save the post into the DB
@@ -50,11 +47,11 @@ router.post('/', async (req, res, next) => {
 
 //put request for updating a post
 router.put('/:id', async (req, res, next) => {
-    const { title, author, content, tags } = req.body;
+    const { ip, author} = req.body;
     // findByIdAndUpdate accepts the post id as the first parameter and the new values as the second parameter
     const post = await Post.findByIdAndUpdate(
         req.params.id,
-        { title, author, content, tags },
+        {ip, author},
     );
 
         return res.status(200).json({

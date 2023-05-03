@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import http from '../lib/http';
 import formatDate from '../lib/formatDate';
+import NavBar from './NavBar';
 
 const Post = () => {
   const { id: postId } = useParams();
@@ -26,11 +27,10 @@ const Post = () => {
   
   return (
     <>
+      <NavBar/>
       <Container className="my-5 text-justified" style={{ maxWidth: '800px' }}>
-        <h1>{post.title}</h1>
+        <h1>{post.ip}</h1>
         <div className="text-secondary mb-4">{formatDate(post.createdAt)}</div>
-        {post.tags?.map((tag) => <span>{tag} </span>)}
-        <div className="h4 mt-5">{post.content}</div>
         <div className="text-secondary mb-5">- {post.author}</div>
         <div className="mb-5">
           <Link

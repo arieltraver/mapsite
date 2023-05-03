@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import http from '../lib/http';
 import Toast from 'react-bootstrap/Toast';
+import NavBar from './NavBar';
 
 
 
@@ -24,11 +25,11 @@ const Signin = () => {
         http.post('/api/auth/signin', { data: payload })
         .then(res => {
             localStorage.setItem("token", res.data.token)
-            console.log("token in storage:",localStorage.getItem("token") )
+            console.log("token in storage:",localStorage.getItem("token"))
             navigate("/")
         }
         ).catch(err =>{
-            console.log("error occurred login", err)
+            console.log("login failed", err)
             setShow(true)
         });
     };
@@ -43,6 +44,8 @@ const Signin = () => {
         .then(res => res.data.isLoggedIn ? setShow2(true) : null)
     }, [])
     return (
+        <>
+        <NavBar/>
         <Container className="my-5" style={{ maxWidth: '800px' }}>
             <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
                 <Toast.Header>
@@ -70,6 +73,7 @@ const Signin = () => {
             </Form>
             <Link to="/" style={{ textDecoration: 'none' }}>&#8592; Back to Home</Link>
         </Container>
+        </>
     );
 };
     

@@ -29,7 +29,7 @@ exports.verifyJWT = (req, res, next) => {
             next()
         })
     } else {
-        res.json({message: "No Token Given", isLoggedIn: false})
+        res.json({message: "No Token Given", isLoggedIn: false, name:null})
     }
 }
 

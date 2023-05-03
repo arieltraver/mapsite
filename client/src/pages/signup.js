@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import http from '../lib/http';
 import Toast from 'react-bootstrap/Toast';
+import NavBar from './NavBar'
 
 
 
@@ -47,6 +48,8 @@ const Signup = () => {
         .then(res => res.data.isLoggedIn ? setShow2(true) : null)
     }, [])
     return (
+        <>
+        <NavBar/>
         <Container className="my-5" style={{ maxWidth: '800px' }}>
             <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
                 <Toast.Header>
@@ -90,6 +93,7 @@ const Signup = () => {
             </div>
             <Link to="/" style={{ textDecoration: 'none' }}>&#8592; Back to Home</Link>
         </Container>
+        </>
     );
 };
     
