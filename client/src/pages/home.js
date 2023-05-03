@@ -7,16 +7,20 @@ import Image from 'react-bootstrap/Image';
 import http from '../lib/http';
 // utility function to format the creation date
 import formatDate from '../lib/formatDate';
+import Map from './map'
 
 const Home = () => {
   // useState allows us to make use of the component state to store the posts
-  const [posts, setPosts] = useState([]); 
+  const [posts, setPosts] = useState([]);
+
+
   useEffect(() => {
     // Call the server to fetch the posts and store them into the state
     async function fetchData() {
       const { data } = await http.get('/api/posts');
       setPosts(data.data.posts);
     }
+    
     fetchData();
   }, []);
   
@@ -24,13 +28,15 @@ const Home = () => {
     <>
       <Container className="my-5" style={{ maxWidth: '800px' }}>
         <Image
-          src="avatar.jpeg"
-          width="150"
-          style={{ borderRadius: '50%' }}
+          src="../maplogo.svg"
+          width="300"
           className="d-block mx-auto img-fluid"
+          style={{marginBottom:-70}}
         />
-        <h2 className="text-center">Welcome to the Digital Marketing blog</h2>
+        <h2 className="text-center">Welcome to IP Mapper</h2>
+        <Map/>
       </Container>
+
       <Container style={{ maxWidth: '800px' }}>
         <ListGroup variant="flush" as="ol">
           {

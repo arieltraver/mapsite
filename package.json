@@ -22,7 +22,8 @@
     "mongoose": "^7.1.0",
     "morgan": "~1.9.1",
     "nodemon": "^2.0.22",
-    "react-bootstrap": "^2.7.4"
+    "react-bootstrap": "^2.7.4",
+    "react-simple-maps": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
