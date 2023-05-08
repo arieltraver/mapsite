@@ -42,7 +42,10 @@ const Edit = () => {
       ip,
       author
     };
-    await http.put(`/api/posts/${postId}`, { data: payload });
+    //we need to be careful about protecting tokens (encryption?)
+    await http.put(`/api/posts/${postId}`, {
+      data: payload, headers: {"x-access-token": localStorage.getItem("token")}
+    });
     navigate(`/posts/${postId}`);
   };
   
@@ -51,7 +54,7 @@ const Edit = () => {
     <NavBar/>
     { user ?
     <Container className="my-5" style={{ maxWidth: '800px' }}>
-      <h1>Edit your Post</h1>
+      <h1>Edit IP</h1>
       <Form onSubmit={handleSubmit(onSubmit)} className="my-5">
         <Form.Group className="mb-3">
           <Form.Label>IP</Form.Label>

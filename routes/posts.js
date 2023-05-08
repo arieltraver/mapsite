@@ -3,6 +3,7 @@ const router = express.Router();
 // Require the post model
 const Post = require('../models/post');
 const http = require('./http')
+const {verifyJWT} = require('../utils/auth')
 
 /* GET posts */
 router.get('/', async (req, res, next) => {
@@ -31,8 +32,9 @@ router.get('/:id', async (req, res, next) => {
 
 
 //post req for creating new post
-router.post('/', async (req, res, next) => {
+router.post('/', (req, res) => {
   const {ip, author} = req.body;
+
   http.get(`http://ip-api.com/json/${ip}`)
 
   .then(rez => { //got results back
@@ -89,7 +91,7 @@ router.post('/', async (req, res, next) => {
 });
 
 //put request for updating a post
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', verifyJWT, async (req, res) => {
   const { ip, author} = req.body;
   http.get(`http://ip-api.com/json/${ip}`)
   .then(async rez => {
@@ -136,7 +138,7 @@ router.put('/:id', async (req, res, next) => {
 
 
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', verifyJWT, async (req, res, next) => {
     // Mongo stores the id as `_id` by default
     const result = await Post.deleteOne({ _id: req.params.id });
     return res.status(200).json({

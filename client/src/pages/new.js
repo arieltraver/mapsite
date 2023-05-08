@@ -7,6 +7,20 @@ import http from '../lib/http';
 import NavBar from './NavBar';
 
 const Post = () => {
+
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const headerz = {
+    "x-access-token": localStorage.getItem("token")
+    }
+    http.get('/api/auth/getName', {
+    headers: headerz
+    })
+    .then(res => res.data.isLoggedIn ? setUser(res.data.name) : null) 
+  }, []);
+
+
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
@@ -15,13 +29,20 @@ const Post = () => {
       ip,
       author,
     };
-    await http.post('/api/posts', { data: payload });
+    const headerz = {
+      "x-access-token": localStorage.getItem("token")
+    }
+    await http.post('/api/posts', {
+      headers: headerz,
+      data: payload,
+    });
     navigate('/');
   };
   
   return (
     <>
-     <NavBar/>
+    <NavBar/>
+    { user ?
     <Container className="my-5" style={{ maxWidth: '800px' }}>
       <h1>Submit new IP</h1>
       <Form onSubmit={handleSubmit(onSubmit)} className="my-5">
@@ -37,6 +58,9 @@ const Post = () => {
       </Form>
       <Link to="/" style={{ textDecoration: 'none' }}>&#8592; Back to Home</Link>
     </Container>
+    :
+    <></>
+    }
     </>
   );
 };

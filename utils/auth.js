@@ -27,7 +27,8 @@ exports.verifyJWT = (req, res, next) => {
             next()
         })
     } else {
-        res.json({message: "No Token Given", isLoggedIn: false, name:null})
+        console.log("\n\nUndefined Token\n\n", req.data)
+        res.status(500).json({message: "No Token Given", isLoggedIn: false, name:null})
     }
 }
 

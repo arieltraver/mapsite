@@ -5,14 +5,21 @@ import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Image from 'react-bootstrap/Image';
 import http from '../lib/http';
-// utility function to format the creation date
-import formatDate from '../lib/formatDate';
-import Map from './map'
 import NavBar from './NavBar';
+import formatDate from '../lib/formatDate';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+
+import { ComposableMap, Geographies, Geography, Annotation, Marker } from "react-simple-maps"
+const geoUrl =
+  "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json"
 
 const Home = () => {
   // useState allows us to make use of the component state to store the posts
   const [posts, setPosts] = useState([]);
+  const [show, setShow] = useState(false);
+
+
 
 
   useEffect(() => {
@@ -24,6 +31,7 @@ const Home = () => {
     
     fetchData();
   }, []);
+
   
   return (
     <>
@@ -36,7 +44,43 @@ const Home = () => {
           style={{marginBottom:-70}}
         />
         <h2 className="text-center">Welcome to IP Mapper</h2>
-        <Map/>
+
+        <ComposableMap>
+        <Geographies geography={geoUrl}>
+          {({ geographies }) =>
+            geographies.map((geo) => (
+              <Geography key={geo.rsmKey} geography={geo} />
+          ))
+          }
+        </Geographies>
+
+        {
+          posts.map((post) => {
+            // Map the posts to JSX
+            return (
+              <>
+              { post.lat ?
+                <>
+                <OverlayTrigger
+                  key="test"
+                  placement="right"
+                  delay={{ show: 50, hide: 50 }}
+                  overlay={<Tooltip id={post.ip}>{post.ip}</Tooltip>}
+                >
+                  <Marker coordinates={[post.lat, post.lon]}>
+                    <circle r={8} fill="#F53" />
+                  </Marker>
+                </OverlayTrigger>
+                </>
+              :
+                <></>
+              }
+              </>
+            )
+          })
+        }
+
+      </ComposableMap>
       </Container>
 
       <Container style={{ maxWidth: '800px' }}>
