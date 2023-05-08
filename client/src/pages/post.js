@@ -7,6 +7,23 @@ import formatDate from '../lib/formatDate';
 import NavBar from './NavBar';
 
 const Post = () => {
+
+  const [user, setUser] = useState(null)
+
+
+
+  useEffect(() => {
+    const headerz = {
+    "x-access-token": localStorage.getItem("token")
+    }
+    http.get('/api/auth/getName', {
+    headers: headerz
+    })
+    .then(res => res.data.isLoggedIn ? setUser("name") : null) 
+  }, []);
+
+
+
   const { id: postId } = useParams();
   const [post, setPost] = useState({});
   const navigate = useNavigate();
@@ -32,16 +49,20 @@ const Post = () => {
         <h1>{post.ip}</h1>
         <div className="text-secondary mb-4">{formatDate(post.createdAt)}</div>
         <div className="text-secondary mb-5">- {post.author}</div>
-        <div className="mb-5">
-          <Link
-            variant="primary"
-            className=" btn btn-primary m-2"
-            to={`/posts/${postId}/edit`}
-          >
-            Edit
-          </Link>
-          <Button variant="danger" onClick={deletePost}>Delete</Button>
-        </div>
+        {user ?
+          <div className="mb-5">
+            <Link
+              variant="primary"
+              className=" btn btn-primary m-2"
+              to={`/posts/${postId}/edit`}
+            >
+              Edit
+            </Link>
+            <Button variant="danger" onClick={deletePost}>Delete</Button>
+          </div>
+        :
+          <></>
+        }
         <Link to="/" style={{ textDecoration: 'none' }}>&#8592; Back to Home</Link>
       </Container>
     </>
