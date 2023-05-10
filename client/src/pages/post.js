@@ -10,8 +10,6 @@ const Post = () => {
 
   const [user, setUser] = useState(null)
 
-
-
   useEffect(() => {
     const headerz = {
     "x-access-token": localStorage.getItem("token")
