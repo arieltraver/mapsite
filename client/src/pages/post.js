@@ -17,7 +17,7 @@ const Post = () => {
     http.get('/api/auth/getName', {
     headers: headerz
     })
-    .then(res => res.data.isLoggedIn ? setUser("name") : null) 
+    .then(res => res.data.isLoggedIn ? setUser(user) : null) 
   }, []);
 
 
@@ -35,7 +35,11 @@ const Post = () => {
   }, [postId]);
   // Delete the post and redirect the user to the homepage
   const deletePost = async () => {
-    await http.delete(`/api/posts/${postId}`);
+    const headerz = {
+      "x-access-token": localStorage.getItem("token"),
+    }
+    await http.delete(`/api/posts/${postId}`,
+    {headers: headerz});
     navigate('/');
   }
   

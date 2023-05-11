@@ -101,8 +101,12 @@ router.post('/', verifyJWT, (req, res) => {
 });
 
 //put request for updating a path
-router.put('/:id', async (req, res) => {
-  const {ips, notes} = req.body;
+router.put('/:id', verifyJWT, async (req, res) => {
+  const {ips, notes, userID} = req.body;
+  const user = req.user;
+  if (userID !== user.userID) {
+    return
+  }
   http.post(`http://ip-api.com/batch`,
   {data: ips}
   )
@@ -160,6 +164,15 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', verifyJWT, async (req, res, next) => {
     // Mongo stores the id as `_id` by default
+    const user = req.user;
+    const path = await Path.findById(req.params.id);
+    if (path.userID !== user.userID) {
+      return res.status(300).json({
+        statusCode: 300,
+        message: `wrong user or not logged in`,
+        data: {},
+      }); 
+    }
     const result = await Path.deleteOne({ _id: req.params.id });
     return res.status(200).json({
       statusCode: 200,

@@ -16,6 +16,18 @@ router.get('/', async (req, res, next) => {
   });
 });
 
+router.get('/mine', verifyJWT, async (req, res, next) => {
+  const userID = req.user.userID
+  const posts = await Post.find().sort({ createdAt: 'desc' }).filter((post) => (post.userID === userID));
+  return res.status(200).json({
+    statusCode: 200,
+    message: 'Fetched all posts',
+    data: { posts },
+  });
+}
+
+)
+
 //show a single post
 router.get('/:id', async (req, res, next) => {
 // req.params contains the route parameters and the id is one of them
@@ -96,7 +108,11 @@ router.post('/', verifyJWT, (req, res) => {
 
 //put request for updating a post
 router.put('/:id', verifyJWT, async (req, res) => {
-  const { ip, notes} = req.body;
+  const {ip, notes, userID} = req.body;
+  const user = req.user;
+  if (userID != user) {
+    return;
+  }
   http.get(`http://ip-api.com/json/${ip}`)
   .then(async rez => {
     if (rez.data.status == "success"){
@@ -144,6 +160,15 @@ router.put('/:id', verifyJWT, async (req, res) => {
 
 router.delete('/:id', verifyJWT, async (req, res, next) => {
     // Mongo stores the id as `_id` by default
+    const user = req.user;
+    const post = await Post.findById({_id: req.params.id});
+    if (post.userID !== user.userID) {
+      return res.status(300).json({
+        statusCode: 300,
+        message: `incorrect user or not logged in`,
+        data: {}
+      })
+    }
     const result = await Post.deleteOne({ _id: req.params.id });
     return res.status(200).json({
       statusCode: 200,
