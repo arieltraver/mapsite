@@ -51,7 +51,7 @@ const Post = () => {
         <h1>{post.ip}</h1>
         <div className="text-secondary mb-4">{formatDate(post.createdAt)}</div>
         <div className="text-secondary mb-5">- {post.notes}</div>
-        {user ?
+        {user && user.userID === post.userID ?
           <div className="mb-5">
             <Link
               variant="primary"

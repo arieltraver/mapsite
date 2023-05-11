@@ -36,7 +36,11 @@ const Path = () => {
   }, [pathId]);
   // Delete the path and redirect the user to the homepage
   const deletePath = async () => {
-    await http.delete(`/api/paths/${pathId}`);
+    const headerz = {
+      "x-access-token": localStorage.getItem("token")
+    } 
+    await http.delete(`/api/paths/${pathId}`,
+    {headers:headerz});
     navigate('/');
   }
   

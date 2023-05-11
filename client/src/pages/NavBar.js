@@ -30,9 +30,9 @@ function NavBar() {
     }, []);
     
     function logout() {
-    localStorage.removeItem("token");
-    setUser(null)
-    navigate("/signin");
+        localStorage.removeItem("token");
+        setUser(null)
+        navigate("/signin");
     }
 
     return (
