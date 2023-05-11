@@ -17,7 +17,7 @@ const New = () => {
     http.get('/api/auth/getName', {
     headers: headerz
     })
-    .then(res => res.data.isLoggedIn ? setUser("ok") : null) 
+    .then(res => res.data.isLoggedIn ? setUser(res.data.user.name) : null) 
   }, []);
   
   
@@ -26,7 +26,7 @@ const New = () => {
     <NavBar/>
     { user ?
       <Tabs
-      defaultActiveKey="profile"
+      defaultActiveKey="post"
       id="postroute"
       className="mb-3"
       >

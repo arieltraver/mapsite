@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 
 // Defines the Post schema
 const PostSchema = new Schema({
+  author: {type: String, required: true},
+  userID: {type: String, required: true},
   ip: { type: String, required: true },
   notes: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },

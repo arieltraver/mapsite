@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import http from '../lib/http';
 import NavBar from './NavBar';
 
-const Edit = () => {
+const EditPath = () => {
   const { id: pathId } = useParams();
   const [user, setUser] = useState(null)
 
@@ -19,7 +19,7 @@ const Edit = () => {
     headers: headerz
     })
     .then(res => res.data.isLoggedIn ? setUser("name") : null) 
-}, []);
+  }, []);
 
 
   const navigate = useNavigate();
@@ -27,8 +27,16 @@ const Edit = () => {
   useEffect(() => {
     async function fetchData() {
       const { data } = await http.get(`/api/paths/${pathId}`);
+      const ipas = data.data.path.ips.map(
+        (ipa) => " "+ipa.ip
+      )
       // by calling "reset", we fill the form fields with the data from the database
-      reset(data.data.path);
+      reset(
+        {
+          ips: ipas,
+          notes: data.data.path.notes
+        }
+        );
     }
     fetchData();
   }, [pathId, reset]);
@@ -36,8 +44,8 @@ const Edit = () => {
   
   const onSubmit = async ({ ips, notes,}) => {
     const payload = {
-      ips,
-      notes
+      ips: ips.split(',').map((ip) => ip.trim()),
+      notes: notes
     };
     //we need to be careful about protecting tokens (encryption?)
     await http.put(`/api/paths/${pathId}`, {
@@ -54,14 +62,14 @@ const Edit = () => {
       <h1>Edit Route</h1>
       <Form onSubmit={handleSubmit(onSubmit)} className="my-5">
         <Form.Group className="mb-3">
-          <Form.Label>Tags</Form.Label>
+          <Form.Label>IPs</Form.Label>
           <Form.Control type="text" placeholder="Enter IPs" {...register('ips')} />
           <Form.Text className="text-muted">
             Enter them separately them with ","
           </Form.Text>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>notes</Form.Label>
+          <Form.Label>Notes</Form.Label>
           <Form.Control type="text" placeholder="Enter notes" {...register('notes')} />
         </Form.Group>
         <Button variant="primary" type="submit">Save</Button>
@@ -75,4 +83,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default EditPath;

@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 
 // Defines the Post schema
 const PathSchema = new Schema({
+  author: {type: String, required: true},
+  userID: {type: String, required: true},
   ips: [
     {
       ip: {type: String, required: true },
@@ -11,7 +13,7 @@ const PathSchema = new Schema({
       lon: {type: Number}
     }
   ],
-  notes: { type: String, required: true },
+  notes: { type: String, required: false },
   createdAt: { type: Date, default: Date.now },
 });
 

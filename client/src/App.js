@@ -9,6 +9,7 @@ import New from './pages/new';
 import Edit from './pages/edit';
 import Signin from './pages/signin';
 import Signup from './pages/signup';
+import EditPath from './pages/editpath';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
       <Route path="/paths/:id" element={<Path/>}/>
       <Route path="/new" element={<New />}/>
       <Route path="/posts/:id/edit" element={<Edit />}/>
+      <Route path="/paths/:id/edit" element={<EditPath />}/>
       <Route path="/signin" element={<Signin />}/>
       <Route path="/signup" element={<Signup/>}/>
       </Routes>

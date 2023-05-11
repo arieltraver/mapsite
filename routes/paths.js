@@ -32,7 +32,9 @@ router.get('/:id', async (req, res, next) => {
 
 
 //post req for creating new path
-router.post('/', (req, res) => {
+router.post('/', verifyJWT, (req, res) => {
+  const user = req.user;
+  console.log("user is", user)
   const {ips, notes} = req.body;
 
   http.post(`http://ip-api.com/batch`,
@@ -63,6 +65,8 @@ router.post('/', (req, res) => {
     let path;
     if (any) {
       path = new Path({
+        author: user.name,
+        userID: user.userID,
         ips: ipadds,
         notes: notes,
       });
@@ -99,22 +103,22 @@ router.post('/', (req, res) => {
 //put request for updating a path
 router.put('/:id', async (req, res) => {
   const {ips, notes} = req.body;
-  http.post(`http://ip-api.com/batch?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as`,
+  http.post(`http://ip-api.com/batch`,
   {data: ips}
   )
-  .then(rez => { //got results back
+  .then(async (rez) => { //got results back
     const responses = rez.data
     let any = false
     ipadds = []
     for (item in responses) {
-      console.log(responses[item]);
       if (responses[item].status == 'success') {
-        let ip = {
+        let ipa = {
           ip: responses[item].query,
           lat: responses[item].lat,
           lon: responses[item].lon
         }
-        ipadds.push(ip)
+        ipadds.push(ipa)
+        console.log(ipa)
         any = true
       } else {
         ipadds.push(
@@ -124,18 +128,19 @@ router.put('/:id', async (req, res) => {
         ) //represents nonexistent value
       }
     }
-    let path = new Path({
-      ipadds,
-      notes,
-    });
       // Save the data
-    path.save().then(() => {
-      return res.status(201).json({
-        statusCode: 201,
-        message: "Success",
-        data: { path },
-      });
-    });
+    const path = await Path.findByIdAndUpdate(
+      req.params.id,
+      {
+        ips: ipadds,
+        notes: notes
+      }
+    )
+    return res.status(201).json({
+      statusCode: 201,
+      message: 'Success',
+      data: { path },
+    })
   })
   .catch(async (err) => {
     console.log(err)

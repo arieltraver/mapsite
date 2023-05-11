@@ -15,10 +15,24 @@ import { ComposableMap, Geographies, Geography, Annotation, Marker } from "react
 const geoUrl =
   "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json"
 
+const red = '#F53';
+const darkred = '#cc0000';
+const blue = '#0066ff';
+const circleSize = 6;
+
 const Home = () => {
   // useState allows us to make use of the component state to store the posts
   const [posts, setPosts] = useState([]);
   const [paths, setPaths] = useState([]);
+
+  function linkOver(e) {
+    e.target.style.color = darkred;
+  }
+
+  function linkOff(e) {
+    e.target.style.color = red;
+  }
+
 
 
   useEffect(() => {
@@ -46,7 +60,7 @@ const Home = () => {
         overlay={<Tooltip id={ip}>{ip}</Tooltip>}
       >
         <Marker coordinates={[x, y]}>
-          <circle r={8} fill={color} />
+          <circle r={circleSize} fill={color} />
         </Marker>
       </OverlayTrigger>
     )
@@ -80,7 +94,7 @@ const Home = () => {
               <>
               {path.ips?.map((ipa) =>
                 <>
-                {drawdot(ipa.lat, ipa.lon, ipa.ip, "#002aff")}
+                {drawdot(ipa.lat, ipa.lon, ipa.ip, blue)}
                 </>
               )}
               </>
@@ -94,7 +108,7 @@ const Home = () => {
             return (
               <>
               { post.lat ?
-                drawdot(post.lat, post.lon, post.ip, "#F53") 
+                drawdot(post.lat, post.lon, post.ip, red) 
               :
                 <></>
               }
@@ -112,11 +126,13 @@ const Home = () => {
           paths.map((path) => {
             // Map the posts to JSX
             return (
-              <ListGroup.Item key={path._id}> 
-                <div className="fw-bold h3">
-                  <Link to={`/paths/${path._id}`} style={{ textDecoration: 'none' }}>{path.ips?.map((path) => <span>{path.ip} <BsArrowRight/> </span>)}</Link>
-                </div>
-                <div>{path.notes} - <span className="text-secondary">{formatDate(path.createdAt)}</span></div>
+              <ListGroup.Item key={path._id}>
+                <Link to={`/paths/${path._id}`} style={{ textDecoration: 'none'}}> 
+                  <div className="fw-bold h3">
+                    {path.ips?.map((path) => <span>{path.ip} <BsArrowRight/> </span>)}
+                  </div>
+                  <div style={{color:'black'}}>- {path.notes}<span className="text-secondary">{'  '}{formatDate(path.createdAt)}</span></div>
+                </Link>
               </ListGroup.Item>
             );
           })
@@ -128,11 +144,13 @@ const Home = () => {
             posts.map((post) => {
               // Map the posts to JSX
               return (
-                <ListGroup.Item key={post._id}> 
-                  <div className="fw-bold h3">
-                    <Link to={`/posts/${post._id}`} style={{ textDecoration: 'none' }}>{post.ip}</Link>
-                  </div>
-                  <div>{post.notes} - <span className="text-secondary">{formatDate(post.createdAt)}</span></div>
+                <ListGroup.Item key={post._id}>
+                  <Link to={`/posts/${post._id}`} style={{ textDecoration: 'none', color:red}}>
+                    <div className="fw-bold h3" onMouseOver={linkOver} onMouseLeave={linkOff}>
+                      {post.ip}
+                    </div>
+                  </Link>
+                  <div>- {post.notes} <span className="text-secondary">{'  '}{formatDate(post.createdAt)}</span></div>
                 </ListGroup.Item>
               );
             })

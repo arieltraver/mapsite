@@ -18,7 +18,7 @@ const Path = () => {
     http.get('/api/auth/getName', {
     headers: headerz
     })
-    .then(res => res.data.isLoggedIn ? setUser("name") : null) 
+    .then(res => res.data.isLoggedIn ? setUser(res.data.user.name) : null) 
   }, []);
 
 

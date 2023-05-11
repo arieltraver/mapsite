@@ -2,9 +2,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const {
-   createJWT
-} = require("../utils/auth");
+const {createJWT} = require("../utils/auth");
 
 const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
@@ -97,6 +95,7 @@ exports.signin = (req, res) => {
           return res.status(400).json({ errors: [{ password: "incorrect" }]});
         }
         let access_token = createJWT(
+            user.name,
             user.email,
             user._id,
             3600

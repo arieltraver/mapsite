@@ -32,8 +32,10 @@ router.get('/:id', async (req, res, next) => {
 
 
 //post req for creating new post
-router.post('/', (req, res) => {
+router.post('/', verifyJWT, (req, res) => {
   const {ip, notes} = req.body;
+  const user = req.user;
+  console.log("user is", user)
 
   http.get(`http://ip-api.com/json/${ip}`)
 
@@ -42,6 +44,8 @@ router.post('/', (req, res) => {
       const lat = rez.data.lat
       const lon = rez.data.lon
       const post = new Post({
+        author:user.name,
+        userID: user.userID,
         ip,
         notes,
         lat,

@@ -11,7 +11,7 @@ const NewPost = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = async ({ ip, notes}) => {
+  const onSubmit = async ({ip, notes}) => {
     const payload = {
       ip,
       notes,
@@ -32,10 +32,10 @@ const NewPost = () => {
       <Form onSubmit={handleSubmit(onSubmit)} className="my-5">
         <Form.Group className="mb-3">
           <Form.Label>IP</Form.Label>
-          <Form.Control type="text" placeholder="Enter ip" {...register('ip')} />
+          <Form.Control type="text" placeholder="Enter IP" {...register('ip')} />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>notes</Form.Label>
+          <Form.Label>Notes</Form.Label>
           <Form.Control type="text" placeholder="Enter notes" {...register('notes')} />
         </Form.Group>
         <Button variant="primary" type="submit">Publish</Button>
