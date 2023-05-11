@@ -10,10 +10,10 @@ const NewPath = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = async ({ ips, author}) => {
+  const onSubmit = async ({ ips, notes}) => {
     const payload = {
       ips: ips.split(',').map((ip) => ip.trim()),
-      author,
+      notes,
     };
     const headerz = {
       "x-access-token": localStorage.getItem("token")
@@ -37,8 +37,8 @@ const NewPath = () => {
           </Form.Text>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Author</Form.Label>
-          <Form.Control type="text" placeholder="Enter author" {...register('author')} />
+          <Form.Label>notes</Form.Label>
+          <Form.Control type="text" placeholder="Enter notes" {...register('notes')} />
         </Form.Group>
         <Button variant="primary" type="submit">Publish</Button>
       </Form>

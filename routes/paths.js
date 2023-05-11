@@ -33,7 +33,7 @@ router.get('/:id', async (req, res, next) => {
 
 //post req for creating new path
 router.post('/', (req, res) => {
-  const {ips, author} = req.body;
+  const {ips, notes} = req.body;
 
   http.post(`http://ip-api.com/batch`,
     {data: ips}
@@ -64,12 +64,12 @@ router.post('/', (req, res) => {
     if (any) {
       path = new Path({
         ips: ipadds,
-        author: author,
+        notes: notes,
       });
     } else {
       path = new Path({
         ips: ips,
-        author: author
+        notes: notes
       })
     }
       // Save the data
@@ -84,7 +84,7 @@ router.post('/', (req, res) => {
   .catch(async () => {
     const path = new Path({
       ips,
-      author,
+      notes,
     });
     // Save the data
     await path.save();
@@ -98,7 +98,7 @@ router.post('/', (req, res) => {
 
 //put request for updating a path
 router.put('/:id', async (req, res) => {
-  const {ips, author} = req.body;
+  const {ips, notes} = req.body;
   http.post(`http://ip-api.com/batch?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as`,
   {data: ips}
   )
@@ -126,7 +126,7 @@ router.put('/:id', async (req, res) => {
     }
     let path = new Path({
       ipadds,
-      author,
+      notes,
     });
       // Save the data
     path.save().then(() => {
@@ -141,7 +141,7 @@ router.put('/:id', async (req, res) => {
     console.log(err)
     const path = await Path.findByIdAndUpdate(
       req.params.id,
-      {ips, author}
+      {ips, notes}
     )
     return res.status(200).json({
       statusCode: 200,

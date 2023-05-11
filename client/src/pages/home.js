@@ -39,7 +39,6 @@ const Home = () => {
 
   function drawdot(x, y, ip, color) {
     return (
-      <>
       <OverlayTrigger
         key="test"
         placement="right"
@@ -50,9 +49,10 @@ const Home = () => {
           <circle r={8} fill={color} />
         </Marker>
       </OverlayTrigger>
-      </>
     )
   }
+  
+
   return (
     <>
      <NavBar/>
@@ -77,15 +77,16 @@ const Home = () => {
         {
           paths.map((path) => {
             return (
-              paths.ips.map((ip) => {
-                return (
-                  drawdot(path.coords.lats[i], path.coords.lons[i], path.ips[i], "#1944ff")
-                )
-              })
-            )
+              <>
+              {path.ips?.map((ipa) =>
+                <>
+                {drawdot(ipa.lat, ipa.lon, ipa.ip, "#002aff")}
+                </>
+              )}
+              </>
+              )
           })
         }
-        
 
         {
           posts.map((post) => {
@@ -93,18 +94,7 @@ const Home = () => {
             return (
               <>
               { post.lat ?
-                <>
-                <OverlayTrigger
-                  key="test"
-                  placement="right"
-                  delay={{ show: 50, hide: 50 }}
-                  overlay={<Tooltip id={post.ip}>{post.ip}</Tooltip>}
-                >
-                  <Marker coordinates={[post.lat, post.lon]}>
-                    <circle r={8} fill="#F53" />
-                  </Marker>
-                </OverlayTrigger>
-                </>
+                drawdot(post.lat, post.lon, post.ip, "#F53") 
               :
                 <></>
               }
@@ -124,9 +114,9 @@ const Home = () => {
             return (
               <ListGroup.Item key={path._id}> 
                 <div className="fw-bold h3">
-                  <Link to={`/paths/${path._id}`} style={{ textDecoration: 'none' }}>{path.ips?.map((ip) => <span>{ip} <BsArrowRight/> </span>)}</Link>
+                  <Link to={`/paths/${path._id}`} style={{ textDecoration: 'none' }}>{path.ips?.map((path) => <span>{path.ip} <BsArrowRight/> </span>)}</Link>
                 </div>
-                <div>{path.author} - <span className="text-secondary">{formatDate(path.createdAt)}</span></div>
+                <div>{path.notes} - <span className="text-secondary">{formatDate(path.createdAt)}</span></div>
               </ListGroup.Item>
             );
           })
@@ -142,7 +132,7 @@ const Home = () => {
                   <div className="fw-bold h3">
                     <Link to={`/posts/${post._id}`} style={{ textDecoration: 'none' }}>{post.ip}</Link>
                   </div>
-                  <div>{post.author} - <span className="text-secondary">{formatDate(post.createdAt)}</span></div>
+                  <div>{post.notes} - <span className="text-secondary">{formatDate(post.createdAt)}</span></div>
                 </ListGroup.Item>
               );
             })

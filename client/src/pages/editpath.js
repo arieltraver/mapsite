@@ -8,10 +8,8 @@ import http from '../lib/http';
 import NavBar from './NavBar';
 
 const Edit = () => {
-  const { id: postId } = useParams();
+  const { id: pathId } = useParams();
   const [user, setUser] = useState(null)
-
-
 
   useEffect(() => {
     const headerz = {
@@ -26,27 +24,26 @@ const Edit = () => {
 
   const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm();
-  // we call the API to fetch the blog post current data
   useEffect(() => {
     async function fetchData() {
-      const { data } = await http.get(`/api/posts/${postId}`);
+      const { data } = await http.get(`/api/paths/${pathId}`);
       // by calling "reset", we fill the form fields with the data from the database
-      reset(data.data.post);
+      reset(data.data.path);
     }
     fetchData();
-  }, [postId, reset]);
+  }, [pathId, reset]);
 
   
-  const onSubmit = async ({ ip, notes,}) => {
+  const onSubmit = async ({ ips, notes,}) => {
     const payload = {
-      ip,
+      ips,
       notes
     };
     //we need to be careful about protecting tokens (encryption?)
-    await http.put(`/api/posts/${postId}`, {
+    await http.put(`/api/paths/${pathId}`, {
       data: payload, headers: {"x-access-token": localStorage.getItem("token")}
     });
-    navigate(`/posts/${postId}`);
+    navigate(`/paths/${pathId}`);
   };
   
   return (
@@ -54,11 +51,14 @@ const Edit = () => {
     <NavBar/>
     { user ?
     <Container className="my-5" style={{ maxWidth: '800px' }}>
-      <h1>Edit IP</h1>
+      <h1>Edit Route</h1>
       <Form onSubmit={handleSubmit(onSubmit)} className="my-5">
         <Form.Group className="mb-3">
-          <Form.Label>IP</Form.Label>
-          <Form.Control type="text" placeholder="Enter ip" {...register('ip')} />
+          <Form.Label>Tags</Form.Label>
+          <Form.Control type="text" placeholder="Enter IPs" {...register('ips')} />
+          <Form.Text className="text-muted">
+            Enter them separately them with ","
+          </Form.Text>
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>notes</Form.Label>

@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import http from '../lib/http';
 import formatDate from '../lib/formatDate';
 import NavBar from './NavBar';
+import {BsArrowRight} from 'react-icons/bs';
 
 const Path = () => {
 
@@ -46,8 +47,8 @@ const Path = () => {
       <Container className="my-5 text-justified" style={{ maxWidth: '800px' }}>
         <h1>Route</h1>
         <div className="text-secondary mb-4">{formatDate(path.createdAt)}</div>
-        <div className="text-secondary mb-4">{path.ips?.map((ip) => <span>{ip} </span>)}</div>
-        <div className="text-secondary mb-5">- {path.author}</div>
+        <div className="text-secondary mb-4">{path.ips?.map((ip) => <span>{ip.ip} <BsArrowRight/> </span>)}</div>
+        <div className="text-secondary mb-5">- {path.notes}</div>
         {user ?
           <div className="mb-5">
             <Link

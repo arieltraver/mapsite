@@ -33,7 +33,7 @@ router.get('/:id', async (req, res, next) => {
 
 //post req for creating new post
 router.post('/', (req, res) => {
-  const {ip, author} = req.body;
+  const {ip, notes} = req.body;
 
   http.get(`http://ip-api.com/json/${ip}`)
 
@@ -43,7 +43,7 @@ router.post('/', (req, res) => {
       const lon = rez.data.lon
       const post = new Post({
         ip,
-        author,
+        notes,
         lat,
         lon,
       });
@@ -62,7 +62,7 @@ router.post('/', (req, res) => {
       console.log("no x and y for that IP", rez)
       const post = new Post({
         ip,
-        author,
+        notes,
       });
       // Save the data
       post.save().then(() => {
@@ -78,7 +78,7 @@ router.post('/', (req, res) => {
   .catch(async () => {
     const post = new Post({
       ip,
-      author,
+      notes,
     });
     // Save the data
     await post.save();
@@ -92,7 +92,7 @@ router.post('/', (req, res) => {
 
 //put request for updating a post
 router.put('/:id', verifyJWT, async (req, res) => {
-  const { ip, author} = req.body;
+  const { ip, notes} = req.body;
   http.get(`http://ip-api.com/json/${ip}`)
   .then(async rez => {
     if (rez.data.status == "success"){
@@ -102,7 +102,7 @@ router.put('/:id', verifyJWT, async (req, res) => {
       // findByIdAndUpdate accepts the post id as the first parameter and the new values as the second parameter
       const post = await Post.findByIdAndUpdate(
       req.params.id,
-      {ip, author, r, l,})
+      {ip, notes, r, l,})
       return res.status(200).json({
         statusCode: 200,
         message: 'Updated post',
@@ -113,7 +113,7 @@ router.put('/:id', verifyJWT, async (req, res) => {
       console.log("editing but no x or y found")
       const post = await Post.findByIdAndUpdate(
         req.params.id,
-        {ip, author}
+        {ip, notes}
       )
       return res.status(200).json({
         statusCode: 200,
@@ -126,7 +126,7 @@ router.put('/:id', verifyJWT, async (req, res) => {
     console.log(err)
     const post = await Post.findByIdAndUpdate(
       req.params.id,
-      {ip, author}
+      {ip, notes}
     )
     return res.status(200).json({
       statusCode: 200,

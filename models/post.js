@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 // Defines the Post schema
 const PostSchema = new Schema({
   ip: { type: String, required: true },
-  author: { type: String, required: true },
+  notes: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   lat: {type: Number, required: false},
   lon: {type: Number, required: false}

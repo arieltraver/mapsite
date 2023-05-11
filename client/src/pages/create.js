@@ -22,11 +22,11 @@ const Post = () => {
     .then(res => res.data.isLoggedIn ? setUser("name") : null) 
 }, []);
 
-  const onSubmit = async ({ ip, author}) => {
+  const onSubmit = async ({ ip, notes}) => {
 
     const payload = {
       ip,
-      author,
+      notes,
     }
     await http.post('/api/posts', { data: payload });
     navigate('/');
@@ -44,8 +44,8 @@ const Post = () => {
           <Form.Control type="text" placeholder="Enter ip" {...register('ip')} />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Author</Form.Label>
-          <Form.Control type="text" placeholder="Enter author" {...register('author')} />
+          <Form.Label>notes</Form.Label>
+          <Form.Control type="text" placeholder="Enter notes" {...register('notes')} />
         </Form.Group>
         <Button variant="primary" type="submit">Publish</Button>
       </Form>

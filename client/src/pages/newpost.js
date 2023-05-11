@@ -11,10 +11,10 @@ const NewPost = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = async ({ ip, author}) => {
+  const onSubmit = async ({ ip, notes}) => {
     const payload = {
       ip,
-      author,
+      notes,
     };
     const headerz = {
       "x-access-token": localStorage.getItem("token")
@@ -35,8 +35,8 @@ const NewPost = () => {
           <Form.Control type="text" placeholder="Enter ip" {...register('ip')} />
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>Author</Form.Label>
-          <Form.Control type="text" placeholder="Enter author" {...register('author')} />
+          <Form.Label>notes</Form.Label>
+          <Form.Control type="text" placeholder="Enter notes" {...register('notes')} />
         </Form.Group>
         <Button variant="primary" type="submit">Publish</Button>
       </Form>

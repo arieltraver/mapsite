@@ -46,7 +46,7 @@ const Post = () => {
       <Container className="my-5 text-justified" style={{ maxWidth: '800px' }}>
         <h1>{post.ip}</h1>
         <div className="text-secondary mb-4">{formatDate(post.createdAt)}</div>
-        <div className="text-secondary mb-5">- {post.author}</div>
+        <div className="text-secondary mb-5">- {post.notes}</div>
         {user ?
           <div className="mb-5">
             <Link
