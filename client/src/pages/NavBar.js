@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {useEffect, useState} from 'react';
 import { useNavigate} from 'react-router-dom'
 import http from '../lib/http'
-
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
@@ -44,7 +43,7 @@ function NavBar() {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 {user ?
                 <Nav className="me-auto"> 
-                    <Nav.Link href="/posts/new">New</Nav.Link>
+                    <Nav.Link href="/new">New</Nav.Link>
                     <Nav.Link onClick={logout}>Logout</Nav.Link>
                 </Nav>
                 :

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 // Link component allow users to navigate to the blog post component page
 import { Link } from 'react-router-dom';
+import {BsArrowRight} from 'react-icons/bs';
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Image from 'react-bootstrap/Image';
@@ -17,9 +18,7 @@ const geoUrl =
 const Home = () => {
   // useState allows us to make use of the component state to store the posts
   const [posts, setPosts] = useState([]);
-  const [show, setShow] = useState(false);
-
-
+  const [paths, setPaths] = useState([]);
 
 
   useEffect(() => {
@@ -28,11 +27,32 @@ const Home = () => {
       const { data } = await http.get('/api/posts');
       setPosts(data.data.posts);
     }
+    async function fetchPaths() {
+      const { data } = await http.get('/api/paths');
+      setPaths(data.data.paths);
+      console.log("paths is", data.data.paths)
+    }
     
     fetchData();
+    fetchPaths();
   }, []);
 
-  
+  function drawdot(x, y, ip, color) {
+    return (
+      <>
+      <OverlayTrigger
+        key="test"
+        placement="right"
+        delay={{ show: 50, hide: 50 }}
+        overlay={<Tooltip id={ip}>{ip}</Tooltip>}
+      >
+        <Marker coordinates={[x, y]}>
+          <circle r={8} fill={color} />
+        </Marker>
+      </OverlayTrigger>
+      </>
+    )
+  }
   return (
     <>
      <NavBar/>
@@ -53,6 +73,19 @@ const Home = () => {
           ))
           }
         </Geographies>
+
+        {
+          paths.map((path) => {
+            return (
+              paths.ips.map((ip) => {
+                return (
+                  drawdot(path.coords.lats[i], path.coords.lons[i], path.ips[i], "#1944ff")
+                )
+              })
+            )
+          })
+        }
+        
 
         {
           posts.map((post) => {
@@ -84,6 +117,22 @@ const Home = () => {
       </Container>
 
       <Container style={{ maxWidth: '800px' }}>
+        <ListGroup variant="flush" as="ol">
+        {
+          paths.map((path) => {
+            // Map the posts to JSX
+            return (
+              <ListGroup.Item key={path._id}> 
+                <div className="fw-bold h3">
+                  <Link to={`/paths/${path._id}`} style={{ textDecoration: 'none' }}>{path.ips?.map((ip) => <span>{ip} <BsArrowRight/> </span>)}</Link>
+                </div>
+                <div>{path.author} - <span className="text-secondary">{formatDate(path.createdAt)}</span></div>
+              </ListGroup.Item>
+            );
+          })
+        }
+
+        </ListGroup>
         <ListGroup variant="flush" as="ol">
           {
             posts.map((post) => {

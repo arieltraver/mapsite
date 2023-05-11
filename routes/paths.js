@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-// Require the post model
+// Require the path model
 const Path = require('../models/path');
 const http = require('./http')
 const {verifyJWT} = require('../utils/auth')
 
-/* GET posts */
+/* GET paths */
 router.get('/', async (req, res, next) => {
   // sort from the latest to the earliest
   const paths = await Path.find().sort({ createdAt: 'desc' });
@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
   });
 });
 
-//show a single post
+//show a single path
 router.get('/:id', async (req, res, next) => {
 // req.params contains the route parameters and the id is one of them
   const path = await Path.findById(req.params.id);
@@ -24,49 +24,53 @@ router.get('/:id', async (req, res, next) => {
     statusCode: 200,
     message: 'Fetched path',
     data: {
-      post: path || {},
+      path: path || {},
     },
   });
 });
 
 
 
-//post req for creating new post
+//post req for creating new path
 router.post('/', (req, res) => {
   const {ips, author} = req.body;
 
-  http.post(`http://ip-api.com/batch?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as`,
+  http.post(`http://ip-api.com/batch`,
     {data: ips}
   )
   .then(rez => { //got results back
     const responses = rez.data
     let any = false
-    let lats = []
-    let longs = []
+    let ipadds = []
     for (item in responses) {
-      console.log(responses[item]);
       if (responses[item].status == 'success') {
-       lats.push(responses[item].lat)
-       longs.push(responses[item].lon)
-       any = true
+        let ipa = {
+          ip: responses[item].query,
+          lat: responses[item].lat,
+          lon: responses[item].lon
+        }
+        ipadds.push(ipa)
+        console.log(ipa);
+        any = true
       } else {
-        lats.push(181) //represents nonexistent value
-        longs.push(181)
+        ipadds.push(
+          {
+            ip: responses[item].query
+          }
+        ) //represents nonexistent value
       }
     }
     let path;
-    let coords = {lats, longs}
     if (any) {
       path = new Path({
-        ips,
-        author,
-        coords,
+        ips: ipadds,
+        author: author,
       });
     } else {
       path = new Path({
-        ips,
-        author,
-      });
+        ips: ips,
+        author: author
+      })
     }
       // Save the data
     path.save().then(() => {
@@ -98,44 +102,44 @@ router.put('/:id', async (req, res) => {
   http.post(`http://ip-api.com/batch?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as`,
   {data: ips}
   )
-  .then(async rez => {
-    let lats = []
-    let lons = []
-    let responses = rez.data
+  .then(rez => { //got results back
+    const responses = rez.data
+    let any = false
+    ipadds = []
     for (item in responses) {
-      if (item.status == "success") {
-       lats.push(item.lat)
-       lons.push(item.lon)
-       any = true
+      console.log(responses[item]);
+      if (responses[item].status == 'success') {
+        let ip = {
+          ip: responses[item].query,
+          lat: responses[item].lat,
+          lon: responses[item].lon
+        }
+        ipadds.push(ip)
+        any = true
       } else {
-        lats.push(181) //represents nonexistent value
-        lons.push(181)
+        ipadds.push(
+          {
+            ip: responses[item].query
+          }
+        ) //represents nonexistent value
       }
     }
-    let path;
-    let coords = {}
-    if (any) {
-      coords = {lats, lons}
-      path = new Path({
-        ips,
-        author,
-        coords,
+    let path = new Path({
+      ipadds,
+      author,
+    });
+      // Save the data
+    path.save().then(() => {
+      return res.status(201).json({
+        statusCode: 201,
+        message: "Success",
+        data: { path },
       });
-    } else {
-      path = new Path({
-        ips,
-        author,
-      });
-    }
-    return res.status(200).json({
-      statusCode: 200,
-      message: 'Updated path',
-      data: { path },
-    })
+    });
   })
   .catch(async (err) => {
     console.log(err)
-    const post = await Path.findByIdAndUpdate(
+    const path = await Path.findByIdAndUpdate(
       req.params.id,
       {ips, author}
     )
@@ -151,10 +155,10 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', verifyJWT, async (req, res, next) => {
     // Mongo stores the id as `_id` by default
-    const result = await Post.deleteOne({ _id: req.params.id });
+    const result = await Path.deleteOne({ _id: req.params.id });
     return res.status(200).json({
       statusCode: 200,
-      message: `Deleted ${result.deletedCount} post(s)`,
+      message: `Deleted ${result.deletedCount} path(s)`,
       data: {},
     });
 });

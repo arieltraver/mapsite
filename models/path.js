@@ -4,13 +4,15 @@ const Schema = mongoose.Schema;
 
 // Defines the Post schema
 const PathSchema = new Schema({
-  ips: { type: [String], required: true },
+  ips: [
+    {
+      ip: {type: String, required: true },
+      lat: {type: Number},
+      lon: {type: Number}
+    }
+  ],
   author: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
-  coords: {
-    lats: {type: [Number]},
-    longs: {type: [Number]}
-  }
 });
 
 // Sets the createdAt parameter equal to the current time
