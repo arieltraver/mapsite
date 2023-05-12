@@ -16,18 +16,6 @@ router.get('/', async (req, res, next) => {
   });
 });
 
-router.get('/mine', verifyJWT, async (req, res, next) => {
-  const userID = req.user.userID
-  const posts = await Post.find().sort({ createdAt: 'desc' }).filter((post) => (post.userID === userID));
-  return res.status(200).json({
-    statusCode: 200,
-    message: 'Fetched all posts',
-    data: { posts },
-  });
-}
-
-)
-
 //show a single post
 router.get('/:id', async (req, res, next) => {
 // req.params contains the route parameters and the id is one of them
@@ -109,17 +97,13 @@ router.post('/', verifyJWT, (req, res) => {
 //put request for updating a post
 router.put('/:id', verifyJWT, async (req, res) => {
   const {ip, notes} = req.body;
-  const test = await post.findById(req.params.id)
+  const test = await Post.findById(req.params.id)
   if (test.userID !== req.user.userID) {
     return res.status(300).json({
       statusCode: 300,
       message: 'wrong user or not logged in',
       data: {},
     })
-  }
-  if (userID != user.userID) {
-    console.log("userID", userID,"\n\n\n")
-    return;
   }
   http.get(`http://ip-api.com/json/${ip}`)
   .then(async rez => {
@@ -130,7 +114,7 @@ router.put('/:id', verifyJWT, async (req, res) => {
       // findByIdAndUpdate accepts the post id as the first parameter and the new values as the second parameter
       const post = await Post.findByIdAndUpdate(
       req.params.id,
-      {ip, notes, r, l,})
+      {ip:ip, notes:notes, lat:r, lon:l,})
       return res.status(200).json({
         statusCode: 200,
         message: 'Updated post',

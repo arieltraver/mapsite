@@ -11,7 +11,7 @@ import formatDate from '../lib/formatDate';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
-import { ComposableMap, Geographies, Geography, Annotation, Marker } from "react-simple-maps"
+import { ComposableMap, Geographies, Geography, Annotation, Marker, ZoomableGroup } from "react-simple-maps"
 const geoUrl =
   "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json"
 
@@ -78,23 +78,24 @@ const Home = () => {
           style={{marginBottom:-70}}
         />
         <h2 className="text-center">Welcome to IP Mapper</h2>
+        <h4 className="text-center">Click and drag to move | Scroll over to zoom in</h4>
 
         <ComposableMap>
-        <Geographies geography={geoUrl}>
-          {({ geographies }) =>
-            geographies.map((geo) => (
-              <Geography key={geo.rsmKey} geography={geo} />
-          ))
-          }
-        </Geographies>
-
+        <ZoomableGroup center={[-90, 50]} zoom={3}>
+          <Geographies geography={geoUrl}>
+            {({ geographies }) =>
+              geographies.map((geo) => (
+                <Geography key={geo.rsmKey} geography={geo} />
+              ))
+            }
+          </Geographies>
         {
           paths.map((path) => {
             return (
               <>
               {path.ips?.map((ipa) =>
                 <>
-                {drawdot(ipa.lat, ipa.lon, ipa.ip, blue)}
+                {drawdot(ipa.lon, ipa.lat, ipa.ip, blue)}
                 </>
               )}
               </>
@@ -108,7 +109,7 @@ const Home = () => {
             return (
               <>
               { post.lat ?
-                drawdot(post.lat, post.lon, post.ip, red) 
+                drawdot(post.lon, post.lat, post.ip, red) 
               :
                 <></>
               }
@@ -116,7 +117,7 @@ const Home = () => {
             )
           })
         }
-
+      </ZoomableGroup>
       </ComposableMap>
       </Container>
 

@@ -37,7 +37,7 @@ const NewPath = () => {
           </Form.Text>
         </Form.Group>
         <Form.Group className="mb-3">
-          <Form.Label>notes</Form.Label>
+          <Form.Label>Notes</Form.Label>
           <Form.Control type="text" placeholder="Enter notes" {...register('notes')} />
         </Form.Group>
         <Button variant="primary" type="submit">Publish</Button>

@@ -102,7 +102,7 @@ router.post('/', verifyJWT, (req, res) => {
 
 //put request for updating a path
 router.put('/:id', verifyJWT, async (req, res) => {
-  const test = await path.findById(req.params.id)
+  const test = await Path.findById(req.params.id)
   if (test.userID !== req.user.userID) {
     return res.status(300).json({
       statusCode: 300,
