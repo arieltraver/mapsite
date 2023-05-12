@@ -17,7 +17,7 @@ const Post = () => {
     http.get('/api/auth/getName', {
     headers: headerz
     })
-    .then(res => res.data.isLoggedIn ? setUser(user) : null) 
+    .then(res => res.data.isLoggedIn ? setUser(res.data.user) : null) 
   }, []);
 
 

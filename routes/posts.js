@@ -108,9 +108,17 @@ router.post('/', verifyJWT, (req, res) => {
 
 //put request for updating a post
 router.put('/:id', verifyJWT, async (req, res) => {
-  const {ip, notes, userID} = req.body;
-  const user = req.user;
-  if (userID != user) {
+  const {ip, notes} = req.body;
+  const test = await post.findById(req.params.id)
+  if (test.userID !== req.user.userID) {
+    return res.status(300).json({
+      statusCode: 300,
+      message: 'wrong user or not logged in',
+      data: {},
+    })
+  }
+  if (userID != user.userID) {
+    console.log("userID", userID,"\n\n\n")
     return;
   }
   http.get(`http://ip-api.com/json/${ip}`)
@@ -134,7 +142,7 @@ router.put('/:id', verifyJWT, async (req, res) => {
       const post = await Post.findByIdAndUpdate(
         req.params.id,
         {ip, notes}
-      )
+      );
       return res.status(200).json({
         statusCode: 200,
         message: 'Updated post',
@@ -148,10 +156,10 @@ router.put('/:id', verifyJWT, async (req, res) => {
       req.params.id,
       {ip, notes}
     )
-    return res.status(200).json({
-      statusCode: 200,
+    return res.status(300).json({
+      statusCode: 300,
       message: 'CoordFail',
-      data: { post },
+      data: { },
     })
   })
 });

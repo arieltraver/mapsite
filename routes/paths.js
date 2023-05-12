@@ -102,10 +102,13 @@ router.post('/', verifyJWT, (req, res) => {
 
 //put request for updating a path
 router.put('/:id', verifyJWT, async (req, res) => {
-  const {ips, notes, userID} = req.body;
-  const user = req.user;
-  if (userID !== user.userID) {
-    return
+  const test = await path.findById(req.params.id)
+  if (test.userID !== req.user.userID) {
+    return res.status(300).json({
+      statusCode: 300,
+      message: 'wrong user or not logged in',
+      data: {},
+    })
   }
   http.post(`http://ip-api.com/batch`,
   {data: ips}
