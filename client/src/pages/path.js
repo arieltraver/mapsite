@@ -9,8 +9,10 @@ import {BsArrowRight} from 'react-icons/bs';
 
 const Path = () => {
 
+  /* save user to see if you're logged in*/
   const [user, setUser] = useState(null)
 
+  /*an effect hook to see if you're logged in. runs at every re-render */
   useEffect(() => {
     const headerz = {
     "x-access-token": localStorage.getItem("token")
@@ -29,6 +31,7 @@ const Path = () => {
   // Fetch the single path
   useEffect(() => {
     async function fetchData() {
+      //grab the paths from backend and save into state variable.
       const { data } = await http.get(`/api/paths/${pathId}`);
       setPath(data.data.path);
     }
