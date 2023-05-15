@@ -37,6 +37,7 @@ router.post('/', verifyJWT, (req, res) => {
   const user = req.user;
   console.log("user is", user)
 
+  //a single request to the external API.
   http.get(`http://ip-api.com/json/${ip}`)
 
   .then(rez => { //got results back

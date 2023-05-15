@@ -9,6 +9,7 @@ require('dotenv').config();
 const { usr } = require('./models/User');
 
 const mongoose = require('mongoose');
+//get your connection string from the .env file
 const CONNECTION_STRING = process.env.CONNECTION_STRING;
 
 // setup connection to mongo

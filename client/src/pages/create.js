@@ -12,6 +12,7 @@ const Post = () => {
   const { register, handleSubmit } = useForm();
   const [user, setUser] = useState(null)
 
+  //effect hook to check if you are logged in
   useEffect(() => {
     const headerz = {
     "x-access-token": localStorage.getItem("token")
@@ -23,11 +24,11 @@ const Post = () => {
 }, []);
 
   const onSubmit = async ({ ip, notes}) => {
-
+    //these fields are sent to the backend
     const payload = {
       ip,
       notes,
-    }
+    } //post request, makes new post.
     await http.post('/api/posts', { data: payload });
     navigate('/');
   };

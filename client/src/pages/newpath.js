@@ -10,19 +10,20 @@ const NewPath = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
 
+  //Button submission
   const onSubmit = async ({ ips, notes}) => {
     const payload = {
       ips: ips.split(',').map((ip) => ip.trim()),
       notes,
     };
-    const headerz = {
+    const headerz = { //for authentification
       "x-access-token": localStorage.getItem("token")
     }
-    await http.post('/api/paths', {
+    await http.post('/api/paths', { //create new post
       headers: headerz,
       data: payload,
     });
-    navigate('/');
+    navigate('/'); //go to homepage
   };
   
   return (

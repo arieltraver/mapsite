@@ -29,6 +29,7 @@ function NavBar() {
         .then(res => res.data.isLoggedIn ? setUser("name") : null) 
     }, []);
     
+    //logout isn't its own page, it's actually just a function here.
     function logout() {
         localStorage.removeItem("token");
         setUser(null)

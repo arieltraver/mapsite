@@ -8,7 +8,7 @@ import http from '../lib/http';
 
 const NewPost = () => {
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //clean way to get to another page
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async ({ip, notes}) => {

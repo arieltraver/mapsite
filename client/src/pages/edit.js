@@ -10,9 +10,7 @@ import NavBar from './NavBar';
 const Edit = () => {
   const { id: postId } = useParams();
   const [user, setUser] = useState(null)
-
-
-
+  //effect hook to check if you are logged in (have valid JWT)
   useEffect(() => {
     const headerz = {
     "x-access-token": localStorage.getItem("token")
@@ -42,7 +40,7 @@ const Edit = () => {
       ip,
       notes
     };
-    //we need to be careful about protecting tokens (encryption?)
+    //we need to be careful about protecting tokens
     await http.put(`/api/posts/${postId}`, {
       data: payload, headers: {"x-access-token": localStorage.getItem("token")}
     });

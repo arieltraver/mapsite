@@ -13,6 +13,7 @@ import EditPath from './pages/editpath';
 
 
 function App() {
+  //routes registered here.
 
   return (
     <>

@@ -11,6 +11,7 @@ import formatDate from '../lib/formatDate';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
+//For mapping IP addresses
 import { ComposableMap, Geographies, Geography, Annotation, Marker, ZoomableGroup } from "react-simple-maps"
 const geoUrl =
   "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json"
@@ -25,6 +26,7 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const [paths, setPaths] = useState([]);
 
+  //scrolling over custom links (red)
   function linkOver(e) {
     e.target.style.color = darkred;
   }
@@ -51,6 +53,7 @@ const Home = () => {
     fetchPaths();
   }, []);
 
+  //plot a point on the map
   function drawdot(x, y, ip, color) {
     return (
       <OverlayTrigger
@@ -89,6 +92,7 @@ const Home = () => {
               ))
             }
           </Geographies>
+          {/* map takes an array, applies function, returns array. (paths is saved in state variable)*/}
         {
           paths.map((path) => {
             return (

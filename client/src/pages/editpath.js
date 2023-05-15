@@ -10,30 +10,29 @@ import NavBar from './NavBar';
 const EditPath = () => {
   const { id: pathId } = useParams();
   const [user, setUser] = useState(null)
-
+  //effect hook runs on re-render. checks if you are logged in (valid jwt)
   useEffect(() => {
     const headerz = {
     "x-access-token": localStorage.getItem("token")
     }
     http.get('/api/auth/getName', {
     headers: headerz
-    })
+    }) //we don't actually use the return value, it's just null or not null.
     .then(res => res.data.isLoggedIn ? setUser("name") : null) 
   }, []);
 
-
   const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm();
-  useEffect(() => {
+  useEffect(() => { //another effect hook for getting the paths from database
     async function fetchData() {
-      const { data } = await http.get(`/api/paths/${pathId}`);
+      const { data } = await http.get(`/api/paths/${pathId}`); //async call
       const ipas = data.data.path.ips.map(
         (ipa) => " "+ipa.ip
       )
-      // by calling "reset", we fill the form fields with the data from the database
+      // reset fills the form fields with the data from the db
       reset(
         {
-          ips: ipas,
+          ips: ipas, //just using different var names here, it's ips not ipas
           notes: data.data.path.notes
         }
         );
@@ -47,7 +46,7 @@ const EditPath = () => {
       ips: ips.split(',').map((ip) => ip.trim()),
       notes: notes
     };
-    //we need to be careful about protecting tokens (encryption?)
+    //we need to be careful about protecting tokens 
     await http.put(`/api/paths/${pathId}`, {
       data: payload, headers: {"x-access-token": localStorage.getItem("token")}
     });

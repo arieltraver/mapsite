@@ -7,9 +7,10 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 
 const New = () => {
+  //this is the landing page for making a new (path or post)
 
   const [user, setUser] = useState(null)
-
+  //check if you're logged in
   useEffect(() => {
     const headerz = {
     "x-access-token": localStorage.getItem("token")

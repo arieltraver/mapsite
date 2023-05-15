@@ -2,13 +2,17 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+//middleware function for authentication
 const {createJWT} = require("../utils/auth");
 
+//check valid email characters using regex
 const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 exports.signup = (req, res, next) => {
   let { name, email, password, password_confirmation } = req.body;
   let errors = [];
+
+  //a bunch of checks to see if you have entered the required data:
 
   if (!name) {
     errors.push({ name: "required" });
@@ -33,7 +37,8 @@ exports.signup = (req, res, next) => {
   if (errors.length > 0) {
     return res.status(422).json({ errors: errors });
   }
-  
+
+  //check if user exists
   User.findOne({email: email})
     .then(user=>{
        if(user){
@@ -69,6 +74,7 @@ exports.signup = (req, res, next) => {
   })
 }
 
+//both exports used in ../routes/auth.js
 exports.signin = (req, res) => {
   let { email, password } = req.body;
   let errors = [];
@@ -98,8 +104,9 @@ exports.signin = (req, res) => {
             user.name,
             user.email,
             user._id,
-            3600
+            3600 //expiration
         );
+        //check if the new jwt works
         jwt.verify(access_token, process.env.TOKEN_SECRET, (err,decoded) => {
           if (err) {
             console.log("jwt failed")
